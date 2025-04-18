@@ -2,6 +2,7 @@ const textEntry = document.getElementById("textEntry");
 const commandInput = document.getElementById("commandInput");
 var mode = "C"; //C = command, A = AI, T = TEXT
 var prefix = "user@termtype:~$ ";
+const version = '1.0.0'
 
 function loadSavedDefaults(){
     
@@ -28,8 +29,11 @@ function readCommandInput(){
     var input = removePrefix(commandInput.value).toLowerCase();
 
     if (input == "help"){
+        printToTerm(commandInput.value);
+        cmdHelp();
     } else if (input == "clear"){
         textEntry.innerHTML = "";
+        return;
     }
 }
 
@@ -42,6 +46,27 @@ function removePrefix(inputString) {
 
 //commands
 
+function cmdHelp(){
+    printToTerm(`Welcome to  
+████████╗███████╗██████╗ ███╗   ███╗████████╗██╗   ██╗██████╗ ███████╗
+╚══██╔══╝██╔════╝██╔══██╗████╗ ████║╚══██╔══╝╚██╗ ██╔╝██╔══██╗██╔════╝
+   ██║   █████╗  ██████╔╝██╔████╔██║   ██║    ╚████╔╝ ██████╔╝█████╗  
+   ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║   ██║     ╚██╔╝  ██╔═══╝ ██╔══╝  
+   ██║   ███████╗██║  ██║██║ ╚═╝ ██║   ██║      ██║   ██║     ███████╗
+   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝      ╚═╝   ╚═╝     ╚══════╝`)
+   printToTerm(`
+You have entered the 'help' command
+This command can be used to learn how other commands and this website works!
+
+Usage: help [command you want help with]
+
+List of commands:
+help    clear   ai  editor  settings    credits
+`);
+}
+
+//other
+
 loadSavedDefaults();
 preamble();
 
@@ -49,6 +74,7 @@ commandInput.onkeydown = function(e){
     if(e.key === "Enter" && mode === "C"){
         readCommandInput(commandInput.innerText);
         commandInput.value = prefix;
+        window.scrollTo(0, document.body.scrollHeight);
     }
 };
 
