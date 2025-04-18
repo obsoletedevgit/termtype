@@ -1,0 +1,28 @@
+* {
+    color: #A25E16;
+    font-family: "Courier New", monospace;
+    font-size: 25px;
+    text-shadow: 0 0 10px #A25E16;
+
+    margin: 1px;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-flow: column;
+    row-gap: 5px;
+
+    background: linear-gradient(to top, #000000, #000000, #333333, #333333);
+    background-size: cover;
+    background-size: 100% 1px;
+    filter: blur(.2px);
+}
+
+.command-line {
+    width: 100%;
+
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
