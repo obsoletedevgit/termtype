@@ -1,11 +1,11 @@
 const textEntry = document.getElementById("textEntry");
 const commandInput = document.getElementById("commandInput");
-var mode = "C"; //C = command, A = AI, T = TEXT
+var mode = "C"; //C = command, A = AI, T = TEXT, H = HELP
 var prefix = "user@termtype:~$ ";
 const version = '1.0.0'
 
 function loadSavedDefaults(){
-    
+
 }
 
 function preamble(){
@@ -29,8 +29,9 @@ function readCommandInput(){
     var input = removePrefix(commandInput.value).toLowerCase();
 
     if (input == "help"){
-        printToTerm(commandInput.value);
-        cmdHelp();
+        printToTerm();
+        cmdHelp(input);
+		return;
     } else if (input == "clear"){
         textEntry.innerHTML = "";
         return;
@@ -46,23 +47,51 @@ function removePrefix(inputString) {
 
 //commands
 
-function cmdHelp(){
-    printToTerm(`Welcome to  
+function cmdHelp(cmd){
+	mode = "H";
+    if (cmd == "help"){
+        printToTerm(`Welcome to  
 ████████╗███████╗██████╗ ███╗   ███╗████████╗██╗   ██╗██████╗ ███████╗
 ╚══██╔══╝██╔════╝██╔══██╗████╗ ████║╚══██╔══╝╚██╗ ██╔╝██╔══██╗██╔════╝
    ██║   █████╗  ██████╔╝██╔████╔██║   ██║    ╚████╔╝ ██████╔╝█████╗  
    ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║   ██║     ╚██╔╝  ██╔═══╝ ██╔══╝  
    ██║   ███████╗██║  ██║██║ ╚═╝ ██║   ██║      ██║   ██║     ███████╗
-   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝      ╚═╝   ╚═╝     ╚══════╝`)
-   printToTerm(`
-You have entered the 'help' command
-This command can be used to learn how other commands and this website works!
+   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝      ╚═╝   ╚═╝     ╚══════╝`);
+        printToTerm("You have entered the 'help' command");
+        printToTerm("This command can be used to learn how other commands and this website works!");
+        printToTerm("List of commands:");
+        printToTerm("help    clear   ai    editor    settings    credits");
+		printToTerm("Type 'quit' to exit help process");
+		printToTerm("Please enter the command you want to learn more about:");
+    }
+}
 
-Usage: help [command you want help with]
-
-List of commands:
-help    clear   ai  editor  settings    credits
-`);
+function parseHelpCommand(){
+	var input = removePrefix(commandInput.value).toLowerCase();
+	
+	if (input == "help"){
+		printToTerm("HELP> The help command can be used to learn more about the commands on this website");
+		printToTerm("HELP> The help command sub-process can be quit using the 'quit' command");
+		return;
+	} else if (input == "quit") {
+		printToTerm("HELP> Bye!");
+		mode = "C";
+		return;
+	} else if (input == "clear"){
+		printToTerm("HELP> The clear command can be used to remove all text from the screen whilst in 'command' mode");
+	} else if (input == "ai") {
+		printToTerm("HELP> The ai command can be used to start the ai sub-process");
+		printToTerm("HELP> The ai sub-process allows a user to start a chat with the gemini 1.5 flash model");
+		printToTerm("HELP> All ai commands have to be prefixed with ! (e.g !quit)");
+		printToTerm("HELP> ai commands:");
+		printToTerm("HELP> msg    new    quit");
+	} else if (input == "editor") {
+		printToTerm("HELP> The editor command can be used to start the text editor sub-process");
+		printToTerm("HELP> The editor command allows the user to create and edit .txt and .md files");
+		printToTerm("HELP> To enable commands in the editor mode you need to press ALT+SHIFT+E");
+		printToTerm("HELP> Editor commands:");
+		printToTerm("HELP> save    load    quit");
+	}
 }
 
 //other
@@ -75,7 +104,11 @@ commandInput.onkeydown = function(e){
         readCommandInput(commandInput.innerText);
         commandInput.value = prefix;
         window.scrollTo(0, document.body.scrollHeight);
-    }
+    } else if (e.key === "Enter" && mode === "H"){
+		parseHelpCommand(commandInput.innerText);
+        commandInput.value = prefix;
+        window.scrollTo(0, document.body.scrollHeight);
+	}
 };
 
 commandInput.addEventListener('input', () => {
