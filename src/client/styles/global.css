@@ -26,3 +26,8 @@ body {
     border: none;
     outline: none;
 }
+
+pre {
+    white-space: pre-wrap;
+    width: 98vw;
+}
