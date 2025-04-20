@@ -40,8 +40,6 @@ function readCommandInput(){
         printToTerm("HELP> All commands start with a prefix, the prefix is '!'");
         printToTerm("HELP> List of commands:");
         printToTerm("HELP> clear    settings    new");
-        printToTerm("HELP> To learn more about chats type '!help chats'");
-        printToTerm("HELP> To learn more about keybinds type '!help keybinds'")
     } else if (input == "!new") {
 		fetch('/sendmessagetoai', {  
 			method: 'post',
@@ -51,7 +49,8 @@ function readCommandInput(){
 			return response.json();
 		}) .then(data => {
 			data = JSON.parse(data);
-            printToTerm("SYSTEM> Chat cleared!");
+            printToTerm("SYSTEM> Ai agent memory cleared.");
+			textEntry.innerHTML = "";
 			commandInput.style.display = "flex";
 			commandInput.disabled = false;
 		});
@@ -74,6 +73,7 @@ function readCommandInput(){
 			printToTerm("AI> " + data.reply, true);
 			commandInput.style.display = "flex";
 			commandInput.disabled = false;
+      		commandInput.focus();
             window.scrollTo(0, document.body.scrollHeight);
 		});
     }
